@@ -1,0 +1,1 @@
+dd.runtime.permission.requestAuthCode({} as any);

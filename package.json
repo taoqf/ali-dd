@@ -1,0 +1,26 @@
+{
+  "name": "ali-dd",
+  "version": "1.5.8",
+  "description": "dingtalk jsapi",
+  "main": "dingtalk.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taoqf/ali-dd.git"
+  },
+  "keywords": [
+    "dd",
+    "dingtalk",
+    "ali",
+    "typescript",
+    "jsapi"
+  ],
+  "author": "taoqf <tao_qiufeng@126.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taoqf/ali-dd/issues"
+  },
+  "homepage": "https://github.com/taoqf/ali-dd#readme"
+}
