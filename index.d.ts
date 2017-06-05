@@ -191,8 +191,8 @@ export namespace runtime {
 			corpId: string;
 			onSuccess(result: {
 				code: string;
-			}),
-			onFail(err: any)
+			}): void;
+			onFail(err: any): void;
 		}): void;
 
 		// 获取微应用反馈式操作的临时授权码
@@ -201,8 +201,8 @@ export namespace runtime {
 			agentId: string;
 			onSuccess(result: {
 				code: string;
-			}),
-			onFail(err: any)
+			}): void;
+			onFail(err: any): void;
 		}): void;
 	}
 }
@@ -214,8 +214,465 @@ export namespace channel {
 			corpId: string;
 			onSuccess(result: {
 				code: string;
-			}),
-			onFail(err: any)
+			}): void;
+			onFail(err: any): void;
 		}): void;
+	}
+}
+
+// 设备
+export namespace device {
+	// 基础信息
+	namespace base {
+		function getUUID(options: {
+			onSuccess(data: {
+				uuid: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 获取热点接入信息
+		function getInterface(options: {
+			onSuccess(data: {
+				ssid: string;
+				macIp: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	namespace nfc {
+		// 读取NFC芯片内容
+		// 只支持有nfc功能的android手机
+		// 支持NDEF的数据交换格式
+		// 使用方法：首先调用此jsapi，然后再把芯片放上去，即可读取，jspai调用一次读取一次信息
+		function nfcRead(options: {
+			onSuccess(data: {
+				content: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 写NFC芯片
+		// 只支持有nfc功能的android手机
+		// 支持NDEF的数据交换格式
+		// 使用方法：首先调用此jsapi，然后再把芯片放上去，即可写入，jsapi调用一次写一次内容
+
+		function nfcWrite(options: {
+			content: string;
+			onSuccess(data: {
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	namespace notification {
+		function alert(options: {
+			message: string;
+			title: string;
+			buttonName: string;
+			//onSuccess将在点击button之后回调
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+
+		function confirm(options: {
+			message: string;
+			title: string;
+			buttonLabels: string[];
+			//onSuccess将在点击button之后回调
+			onSuccess(result: {
+				buttonIndex: number; //被点击按钮的索引值，Number类型，从0开始
+			}): void;
+			onFail(err): void;
+		}): void;
+
+		function prompt(options: {
+			message: string;
+			title: string;
+			buttonLabels: string[];
+			//onSuccess将在点击button之后回调
+			onSuccess(result: {
+				buttonIndex: number; //被点击按钮的索引值，Number类型，从0开始
+				value: string; //输入的值
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 震动
+		function vibrate(options: {
+			duration: string; //震动时间，android可配置 iOS忽略
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 显示浮层，请和hidePreloader配对使用
+		function showPreloader(options: {
+			text: string; //loading显示的字符，空表示不显示文字
+			showIcon: boolean; //是否显示icon，默认true
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		function hidePreloader(options: {
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		function toast(options: {
+			icon: '' | 'success' | 'error'; //icon样式，有success和error，默认为空 0.0.2
+			text: string; //提示信息
+			duration: number; //显示持续时间，单位秒，默认按系统规范[android只有两种(<=2s >2s)]
+			delay: number; //延迟显示，单位秒，默认0
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 单选列表
+		function actionSheet(options: {
+			title: string; //标题
+			cancelButton: string; //取消按钮文本
+			otherButtons: string[];
+			//onSuccess将在点击button之后回调
+			onSuccess(result: {
+				buttonIndex: number; //被点击按钮的索引值，Number，从0开始, 取消按钮为-1
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// modal弹浮层
+		function modal(options: {
+			image: string; // 标题图片地址
+			title: string; //标题
+			content: string; //文本内容
+			buttonLabels: string[];// 最多两个按钮，至少有一个按钮。
+			//onSuccess将在点击button之后回调
+			onSuccess(result: {
+				buttonIndex: number; //被点击按钮的索引值，Number，从0开始
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 地图
+	namespace geolocation {
+		// 获取当前地理位置
+		function get(options: {
+			targetAccuracy: number;
+			coordinate: number;
+			withReGeocode: boolean;
+			// 高德坐标 result 结构
+			onSuccess(result: {
+				longitude: number;
+				latitude: number;
+				accuracy: number;
+				address: string;
+				province: string;
+				city: string;
+				district: string;
+				road: string;
+				netType: string;
+				operatorType: string;
+				errorMessage: string;
+				errorCode: number;
+				isWifiEnabled: string;
+				isGpsEnabled: string;
+				isFromMock: string;
+				provider: 'wifi' | 'lbs' | 'gps';
+				isMobileEnabled: boolean;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+}
+
+export namespace biz {
+	namespace cspace {
+		// 转存文件到钉盘
+		function saveFile(options: {
+			corpId: string;
+			url: string;
+			name: string;
+			onSuccess(data: {
+				corpId: string;
+				spaceId: string;
+				fileId: string;
+				fileName: string;
+				fileSize: number;
+				fileType: string;
+			}[]): void;
+			onFail(err: any): void;
+		}): void;
+
+		function preview(options: {
+			corpId: string;
+			spaceId: string;
+			fileId: string;
+			fileName: string;
+			fileSize: number;
+			fileType: string;
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	namespace util {
+		// 支持多种文件形式上传。禁止恶意上传。
+		function uploadAttachment(options: {
+			image: { multiple: true, compress: false, max: 9, spaceId: "12345" },
+			space: { corpId: "xxx3020", spaceId: "12345", isCopy: 1, max: 9 },
+			file: { spaceId: "12345", max: 1 },
+			types: ["photo", "camera", "file", "space"],
+			//onSuccess将在文件上传成功之后调用
+			onSuccess(result: {
+				type: 'image' | 'file' | 'space'; // 用户选择了哪种文件类型 ，image（图片）、file（手机文件）、space（钉盘文件）
+				data: {
+					spaceId: string;
+					fileId: string;
+					fileName: string;
+					fileSize: number;
+					fileType: string;
+				}[]
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 上传图片
+		function uploadImage(options: {
+			multiple: boolean //是否多选，默认false
+			max: number; //最多可选个数
+			//onSuccess将在图片上传成功之后调用
+			onSuccess(result: string[]
+			): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 上传图片（仅支持拍照上传）
+		function uploadImageFromCamera(options: {
+			compression: boolean;//(是否压缩，默认为true)
+			//onSuccess将在图片上传成功之后调用
+			onSuccess(result: string[]): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 图片浏览器
+		function previewImage(options: {
+			urls: string[];		// 图片地址列表
+			current: string;	// 当前显示的图片链接
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 日期选择器
+		function datepicker(options: {
+			format: 'yyyy-MM-dd' | 'HH:mm' | 'yyyy-MM-dd HH:mm';
+			value: string; //默认显示日期
+			//onSuccess将在点击完成之后回调
+			onSuccess(result: {
+				value: "2015-02-10";
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 下拉控件
+		function chosen(options: {
+			source: {
+				key: string; //显示文本
+				value: string; //值，
+			}[];
+			selectedKey: string; // 默认选中的key
+			//onSuccess将在点击完成之后回调
+			onSuccess(result: {
+				key: string;
+				value: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 打开应用内页面
+		// a.个人资料页
+		function open(options: {
+			name: 'profile';//页面名称
+			params: {
+				id: string;
+				corpId: string;
+			};
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+
+		// b.聊天页面
+		function open(options: {
+			name: 'chat';//页面名称
+			params: {
+				users: string[];	// 用户列表,工号
+				corpId: string;
+			};
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// c.免费电话页面
+		function open(options: {
+			name: 'call';//页面名称
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// d.联系人添加页面
+		function open(options: {
+			name: 'contactAdd';//页面名称
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// f.唤起添加好友页面
+		function open(options: {
+			name: 'friendAdd';//页面名称
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// g.唤起员工管理页面
+		function open(options: {
+			name: 'manageOrg';//页面名称
+			params: {
+				corpId: string;
+				isManager: boolean;
+			};
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 在新窗口上打开链接
+		function openLink(options: {
+			url: string;	// 要打开链接的地址
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 分享
+		function share(options: {
+			type: 0 | 1 | 2;//分享类型，0:全部组件 默认； 1:只能分享到钉钉；2:不能分享，只有刷新按钮
+			url: string;
+			title: string;
+			content: string;
+			image: string;
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+
+		// ut数据埋点
+		function ut(options: {
+			key: string;//打点名
+			value: string | any;//打点传值
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+
+		namespace clipboardData {
+			// 复制到粘贴版
+			function setData(options: {
+				text: string; //要复制粘贴板的内容
+				onSuccess(): void;
+				onFail(): void;
+			}): void;
+		}
+	}
+
+	namespace map {
+		//地图定位
+		function locate(options: {
+			latitude: number; // 纬度
+			longitude: number; // 经度
+			onSuccess(result: {
+				/* result 结构 */
+				province: string; // POI所在省会
+				provinceCode: string; // POI所在省会编码
+				city: string; // POI所在城市
+				cityCode: string; // POI所在城市
+				adName: string; // POI所在区名称
+				adCode: string; // POI所在区编码
+				distance: string; // POI与设备位置的距离
+				postCode: string; // POI的邮编
+				snippet: string; // POI的街道地址
+				title: string; // POI的名称
+				latitude: number; // POI的纬度
+				longitude: number; // POI的经度
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// POI搜索
+		function search(options: {
+			latitude: number; // 纬度
+			longitude: number; // 经度
+			scope: number; // 限制搜索POI的范围；设备位置为中心，scope为搜索半径
+			onSuccess(poi: {
+				/* result 结构 */
+				province: string; // POI所在省会
+				provinceCode: string; // POI所在省会编码
+				city: string; // POI所在城市
+				cityCode: string; // POI所在城市
+				adName: string; // POI所在区名称
+				adCode: string; // POI所在区编码
+				distance: string; // POI与设备位置的距离
+				postCode: string; // POI的邮编
+				snippet: string; // POI的街道地址
+				title: string; // POI的名称
+				latitude: number; // POI的纬度
+				longitude: number; // POI的经度
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 展示位置
+		function view(options: {
+			latitude: number; // 纬度
+			longitude: number; // 经度
+			title: string; // 地址/POI名称
+		}): void;
+	}
+
+	namespace chat {
+		// 获取会话信息
+		function pickConversation(options: {
+			corpId: string; //企业id
+			isConfirm: boolean; //是否弹出确认窗口，默认为true
+			//onSuccess将在选择结束之后调用
+			onSuccess(result: {
+				// 该cid和服务端开发文档-普通会话消息接口配合使用，而且只能使用一次，之后将失效
+				cid: string;
+				title: string;
+			}): void;
+			onFail(): void;
+		}): void;
+
+		// 根据corpid选择会话
+		function chooseConversationByCorpId(options: {
+			corpId: string; //企业id
+			//onSuccess将在选择结束之后调用
+			onSuccess(result: {
+				chatId: string;
+				title: string;
+			}): void;
+			onFail(): void;
+		}): void;
+
+		// 根据chatid跳转到对应会话
+		function toConversation(options: {
+			corpId: string; //企业id
+			chatId: string;//会话Id
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+
+		// 打开与某个用户的聊天页面（单聊会话）
+		function openSingleChat(options: {
+			corpId: string; // 企业id
+			userId: string; // 用户的工号
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+	}
+
+	namespace ding {
+
 	}
 }
