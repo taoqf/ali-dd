@@ -384,6 +384,129 @@ export namespace device {
 			onFail(err: any): void;
 		}): void;
 	}
+
+	// 音频
+	namespace audio {
+		// 开始录音
+		function startRecord(options: {
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// 停止录音
+		function stopRecord(options: {
+			onSuccess(res: {
+				mediaId: string; // 返回音频的MediaID，可用于本地播放和音频下载
+				duration: number; // 返回音频的时长，单位：秒
+			}): void;
+			onFail(err): void;
+		}): void;
+		// 监听录音自动停止
+		function onRecordEnd(options: {
+			onSuccess(res: {
+				mediaId: string; // 停止播放音频MediaID
+				duration: number; // 返回音频的时长，单位：秒
+			}): void;
+			onFail(err: any): void;
+		}): void;
+		// 下载音频
+		function download(options: {
+			mediaId: string;
+			onSuccess(res: {
+				localAudioId: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+		// 播放语音
+		function play(options: {
+			localAudioId: string;
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// 暂停播放语音
+		function pause(options: {
+			localAudioId: string;
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// 恢复暂停播放的语音
+		function resume(options: {
+			localAudioId: string;
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// 停止播放语音
+		function stop(options: {
+			localAudioId: string;
+			onSuccess(): void;
+			onFail(err: any): void;
+		}): void;
+		// 监听播放自动停止
+		function onPlayEnd(options: {
+			onSuccess(res: {
+				localAudioId: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+		// 语音转文字接口
+		function translateVoice(options: {
+			mediaId: string;
+			duration: number;
+			onSuccess(res: {
+				mediaId: string; // 转换的语音的mediaId
+				content: string; // 语音转换的文字内容
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 启动器
+	namespace launcher {
+		// 检测应用是否安装
+		function checkInstalledApps(options: {
+			apps: string[]; //iOS:应用scheme;Android:应用包名
+			onSuccess(data: {
+				installed: string[]; //iOS:应用scheme;Android:应用包名
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 启动第三方应用
+		function launchApp(options: {
+			app: string; //iOS:应用scheme;Android:应用包名
+			activity: string; //仅限Android，打开指定Activity，可不传。如果为空，就打开App的Main入口Activity
+			onSuccess(data: {
+				result: boolean; //true 唤起成功 false 唤起失败
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 获取当前网络类型
+	namespace connection {
+		function getNetworkType(options: {
+			onSuccess(data: {
+				result: 'wifi' | '2g' | '3g' | '4g' | 'unknown' | 'none'; // result值: wifi 2g 3g 4g unknown none   none表示离线
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 加速器
+	namespace accelerometer {
+		// 摇一摇 开启监听
+		function watchShake(options: {
+			sensitivity: number;//振动幅度，Number类型，加速度变化超过这个值后触发shake
+			frequency: number;//采样间隔(毫秒)，Number类型，指每隔多长时间对加速度进行一次采样， 然后对比前后变化，判断是否触发shake
+			callbackDelay: number;//触发『摇一摇』后的等待时间(毫秒)，Number类型，防止频繁调用
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+		// 摇一摇 开启监听
+		function clearShake(options: {
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+	}
 }
 
 export namespace biz {
@@ -574,6 +697,32 @@ export namespace biz {
 				onFail(): void;
 			}): void;
 		}
+
+		// 扫描条形码、二维码
+		function scan(options: {
+			type: 'qrCode' | 'barCode'; // type为qrCode或者barCode
+			//onSuccess将在扫码成功之后回调
+			onSuccess(data: {
+				text: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+		// 扫描名片
+		function scanCard(options: { // 无需传参数
+			//onSuccess将在扫码成功之后回调
+			onSuccess(data: {
+				ADDRESS: string;
+				COMPANY: string;
+				NAME: string;
+				MPHONE: string;
+				PHONE: string;
+				POSITION: string;
+				IMAGE: string;
+				dt_tranfer: string;
+				request_id: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
 	}
 
 	namespace map {
@@ -673,6 +822,315 @@ export namespace biz {
 	}
 
 	namespace ding {
+		// 发钉
+		function post(options: {
+			users: string[];//用户列表，工号
+			corpId: string; //企业id
+			type: 1; //附件类型 1：image  2：link
+			alertType: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
+			alertDate: {
+				format: "yyyy-MM-dd HH:mm";
+				value: string;
+			};
+			attachment: {
+				images: string[];
+			}; //附件信息
+			text: string; //消息
+			// onSuccess将在点击发送之后调用
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+		// 发钉 Link类型
+		function post(options: {
+			users: string[];//用户列表，工号
+			corpId: string; //企业id
+			type: 2; //钉类型 1：image  2：link
+			alertType: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
+			alertDate: {
+				format: "yyyy-MM-dd HH:mm";
+				value: string;
+			};
+			attachment: {
+				title: string;
+				url: string;
+				image: string;
+				text: string;
+			};
+			text: string; //消息
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+	}
 
+	// 电话
+	namespace telephone {
+		// 拨打钉钉电话
+		function call(options: {
+			users: string[]; //用户列表，工号
+			corpId: string; //企业id
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+
+		// 通用电话拨打接口
+		function showCallMenu(options: {
+			phoneNumber: string; // 期望拨打的电话号码
+			code: string; // 国家代号，中国是+86
+			showDingCall: boolean; // 是否显示钉钉电话
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+	}
+
+	namespace alipay {
+		// 支付接口
+		function pay(options: {
+			info: string; // 订单信息，
+			onSuccess(result: {
+				memo: string; // 保留参数，一般无内容
+				result: string; // 本次操作返回的结果数据
+				resultStatus: string; // 本次操作的状态返回值，标识本次调用的结果
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	namespace navigation {
+		// 设置导航栏标题
+		function setTitle(options: {
+			title: string;//控制标题文本，空字符串表示显示默认文本
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 标题栏添加问号Icon
+		function setIcon(options: {
+			showIcon: boolean;//是否显示icon
+			iconIndex: 1 | 2 | 3 | 101 | 102 | 103;//显示的iconIndex,如上图
+			//点击icon之后将会回调这个函数
+			onSuccess(result: {}): void;
+			//jsapi调用失败将会回调此函数
+			onFail(err: any): void;
+		}): void;
+
+		// 设置左侧导航按钮
+		function setLeft(options: {
+			show: boolean;//控制按钮显示， true 显示， false 隐藏， 默认true
+			control: boolean;//是否控制点击事件，true 控制，false 不控制， 默认false
+			showIcon: boolean;//是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+			text: string;//控制显示文本，空字符串表示显示默认文本
+			//如果control为true，则onSuccess将在发生按钮点击事件被回调
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 设置导航栏右侧
+		function setRight(options: {
+			show: boolean;//控制按钮显示， true 显示， false 隐藏， 默认true
+			control: boolean;//是否控制点击事件，true 控制，false 不控制， 默认false
+			text: string;//控制显示文本，空字符串表示显示默认文本
+			//如果control为true，则onSuccess将在发生按钮点击事件被回调
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 设置导航栏右侧多个按钮
+		function setMenu(options: {
+			backgroundColor: string;
+			textColor: string;
+			items: {
+				id: string; //字符串
+				iconId: string; //字符串，图标命名
+				text: string;
+			}[],
+			onSuccess(data: {
+				id: string;
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 触发关闭
+		function close(options: {
+			onSuccess(result: {}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 企业通讯录
+	namespace contact {
+		// 选人
+		function choose(options: {
+			startWithDepartmentId: number; //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
+			multiple: boolean; //是否多选： true多选 false单选； 默认true
+			users: string[]; //默认选中的用户列表，userid；成功回调中应包含该信息
+			disabledUsers: string[];	// 不能选中的用户列表，员工userid
+			corpId: string; //企业id
+			max: number; //人数限制，当multiple为true才生效，可选范围1-1500
+			limitTips: string; //超过人数限制的提示语可以用这个字段自定义
+			isNeedSearch: boolean; // 是否需要搜索功能
+			title: string; // 如果你需要修改选人页面的title，可以在这里赋值
+			local: string; // 是否显示本地联系人，默认false
+			//onSuccess将在选人结束，点击确定按钮的时候被回调
+			onSuccess(data: {
+				name: string; //姓名
+				avatar: string; //头像图片url，可能为空
+				emplId: string; //userid
+			}[]): void;
+			onFail(err: any): void;
+		}): void;
+		// 选人，选部门
+		function complexChoose(options: {
+			startWithDepartmentId: number; //-1表示从自己所在部门开始, 0表示从企业最上层开始，其他数字表示从该部门开始
+			selectedUsers: string[]; //预选用户
+			disabledUsers: string[]; // 不能选中的用户列表，员工userid
+			selectedDepartments: string[]; // 预选中的部门列表，部门id
+			disabledDepartments: string[]; // 不能选中的部门列表，部门id
+			max: number; //人数限制，当multiple为true才生效，可选范围1-1500
+			limitTips: string; //超过人数限制的提示语可以用这个字段自定义
+			local: boolean; // 是否显示本地联系人，默认false
+			isNeedSearch: boolean; // 是否需要搜索功能
+			corpId: string; //企业id
+			//onSuccess将在选人，选部门结束，点击确定按钮的时候被回调
+			onSuccess(data: {
+				users: {
+					name: string; //姓名
+					avatar: string; //头像图片url，可能为空
+					emplId: string; //userid:
+				}[];
+				departments: {
+					id: 2,
+					name: string;
+				}[];
+			}): void;
+			onFail(err: any): void;
+		}): void;
+		// 选部门
+		function complexPicker(options: {
+			title: string;            //标题
+			corpId: string;              //企业的corpId
+			multiple: boolean;            //是否多选
+			limitTips: string;          //超过限定人数返回提示
+			maxUsers: number;            //最大可选人数
+			pickedUsers: string[];            //已选用户
+			pickedDepartments: string[];          //已选部门
+			disabledUsers: string[];            //不可选用户
+			disabledDepartments: string[];        //不可选部门
+			requiredUsers: string[];            //必选用户（不可取消选中状态）
+			requiredDepartments: string[];        //必选部门（不可取消选中状态）
+			appId: number;              //微应用的Id
+			permissionType: 'GLOBAL';          //选人权限，目前只有GLOBAL这个参数
+			responseUserOnly: boolean;        //单纯返回人，或者返回人和部门
+			onSuccess(result: {
+				selectedCount: number;                              //选择人数
+				users: {
+					name: string;
+					avatar: string;
+					emplId: string;
+				}[];//返回选人的列表，列表中的对象包含name（用户名），avatar（用户头像），emplId（用户工号）三个字段
+				departments: {
+					id: string;
+					name: string;
+					number: number;
+				}[];//返回已选部门列表，列表中每个对象包含id（部门id）、name（部门名称）、number（部门人数）
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 选择部门信息
+		function departmentsPicker(options: {
+			title: string;            //标题
+			corpId: string;              //企业的corpId
+			multiple: boolean;            //是否多选
+			limitTips: string;          //超过限定人数返回提示
+			maxDepartments: number;            //最大选择部门数量
+			pickedDepartments: string[];          //已选部门
+			disabledDepartments: string[];        //不可选部门
+			requiredDepartments: string[];        //必选部门（不可取消选中状态）
+			appId: number;              //微应用的Id
+			permissionType: 'GLOBAL';          //选人权限，目前只有GLOBAL这个参数
+			onSuccess(result: {
+				userCount: number;                              //选择人数
+				departmentsCount: number;//选择的部门数量
+				departments: {
+					id: string;
+					name: string;
+					number: number;
+				}[];//返回已选部门列表，列表中每个对象包含id（部门id）、name（部门名称）、number（部门人数）
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 创建企业群聊天
+		function createGroup(options: {
+			corpId: string; //企业id，可选，配置该参数即在指定企业创建群聊天
+			users: string[]; //默认选中的用户工号列表，可选；使用此参数必须指定corpId
+			onSuccess(result: {
+				id: number;   //企业群id
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 设定规则选人
+		function setRule(options: {
+			title: string;//标题
+			multiple: boolean; //是否多选： true多选 false单选； 默认true
+			selectRuledUsers: boolean; // 是否需要去取默认的uid list
+			corpId: string; //企业id，corpid必须是用户所属的企业的corpid
+			maxUsers: number; //人数限制，当multiple为true才生效，可选范围1-1500
+			limitTips: string; //超出选人的人数限制之后的提示
+			appId: string; //企业appid ， 非必填
+			permissionType: string;//权限类型，非必填
+			agentId: number;
+			ruleId: number;// 规则id
+			ruleName: string; //规则名称
+			//onSuccess将在选择结束，点击确定按钮的时候被回调
+			onSuccess(data: {
+				userCount: number;//选中的人数
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+}
+
+export namespace ui {
+	// 输入框
+	namespace input {
+		function plain(options: {
+			placeholder: string; //占位符
+			text: string; //默认填充文本
+			//onSuccess将在点击发送之后调用
+			onSuccess(data: {
+				text: String
+			}): void;
+			onFail(): void;
+		}): void;
+	}
+
+	namespace progressBar {
+		// 设置顶部进度条颜色
+		function setColors(options: {
+			colors: number[]; //array[number] 进度条变化颜色，最多支持4个颜色
+			onSuccess(data: boolean): void;
+			onFail(): void;
+		}): void;
+	}
+
+	namespace pullToRefresh {
+		// 启用下拉刷新
+		function enable(options: {
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+		// 收起下拉loading
+		function stop(): void;
+		// 禁用下拉刷新
+		function disable(): void;
+	}
+
+	namespace webViewBounce {
+		// 启用iOS webview弹性效果(仅iOS支持) 0.0.5
+		function enable(): void;
+		// 禁用iOS webview弹性效果(仅iOS支持) 0.0.5
+		function disable(): void;
 	}
 }
