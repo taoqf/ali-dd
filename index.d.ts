@@ -175,6 +175,11 @@ export interface ConfigOption {
 	jsApiList: JsApiList[];
 }
 
+// 钉钉统一跳转协议
+// 一个第三方客户端app，在其页面内通过一个url跳转可以打开钉钉的客户端，同时钉钉会帮助其打开一个指定的url页面。代码示例如下：
+// dingtalk://dingtalkclient/page/link?url=http%3A%2F%2Fwww.laiwang.com
+// 需要注意的是url后面的参数（即你希望钉钉打开的url页面地址）必须做urlencode。
+
 export function config(a: ConfigOption);
 
 export function ready(callback: () => {});
@@ -723,6 +728,21 @@ export namespace biz {
 			}): void;
 			onFail(err: any): void;
 		}): void;
+
+		// 客户端加密、解密
+		function encrypt(options: {
+			corpId: string;//必传,
+			data: any;
+			onSuccess(data: any): void;
+			onFail(err: any): void;
+		}): void;
+
+		function decrypt(options: {
+			corpId: string;
+			data: any;
+			onSuccess(data: any): void;
+			onFail(err: any): void;
+		}): void;
 	}
 
 	namespace map {
@@ -816,6 +836,15 @@ export namespace biz {
 		function openSingleChat(options: {
 			corpId: string; // 企业id
 			userId: string; // 用户的工号
+			onSuccess(): void;
+			onFail(): void;
+		}): void;
+
+		// 拉起对应的会话页面(当前的H5页面会被销毁)
+		function locationChatMessage(options: {
+			chatId: string; // 消息来源的会话id
+			msgId: string;  // 某条消息的消息锚点，进入聊天页面后会根据锚点滚动到锚点对应的消息出，如果用户设备没有这条消息，该字段不会生效.
+			corpId: string; // 当前活动的微应用所在企业的corpId
 			onSuccess(): void;
 			onFail(): void;
 		}): void;
@@ -985,7 +1014,7 @@ export namespace biz {
 			disabledUsers: string[]; // 不能选中的用户列表，员工userid
 			selectedDepartments: string[]; // 预选中的部门列表，部门id
 			disabledDepartments: string[]; // 不能选中的部门列表，部门id
-			max: number; //人数限制，当multiple为true才生效，可选范围1-1500
+			max?: number; //人数限制，当multiple为true才生效，可选范围1-1500
 			limitTips: string; //超过人数限制的提示语可以用这个字段自定义
 			local: boolean; // 是否显示本地联系人，默认false
 			isNeedSearch: boolean; // 是否需要搜索功能
@@ -1010,7 +1039,7 @@ export namespace biz {
 			corpId: string;              //企业的corpId
 			multiple: boolean;            //是否多选
 			limitTips: string;          //超过限定人数返回提示
-			maxUsers: number;            //最大可选人数
+			maxUsers?: number;            //最大可选人数
 			pickedUsers: string[];            //已选用户
 			pickedDepartments: string[];          //已选部门
 			disabledUsers: string[];            //不可选用户
@@ -1042,7 +1071,7 @@ export namespace biz {
 			corpId: string;              //企业的corpId
 			multiple: boolean;            //是否多选
 			limitTips: string;          //超过限定人数返回提示
-			maxDepartments: number;            //最大选择部门数量
+			maxDepartments?: number;            //最大选择部门数量
 			pickedDepartments: string[];          //已选部门
 			disabledDepartments: string[];        //不可选部门
 			requiredDepartments: string[];        //必选部门（不可取消选中状态）
@@ -1076,7 +1105,7 @@ export namespace biz {
 			multiple: boolean; //是否多选： true多选 false单选； 默认true
 			selectRuledUsers: boolean; // 是否需要去取默认的uid list
 			corpId: string; //企业id，corpid必须是用户所属的企业的corpid
-			maxUsers: number; //人数限制，当multiple为true才生效，可选范围1-1500
+			maxUsers?: number; //人数限制，当multiple为true才生效，可选范围1-1500
 			limitTips: string; //超出选人的人数限制之后的提示
 			appId: string; //企业appid ， 非必填
 			permissionType: string;//权限类型，非必填
@@ -1086,6 +1115,116 @@ export namespace biz {
 			//onSuccess将在选择结束，点击确定按钮的时候被回调
 			onSuccess(data: {
 				userCount: number;//选中的人数
+			}): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 选择外部联系人
+		function externalComplexPicker(options: {
+			title: string;
+			corpId: string;
+			multiple: boolean; //是否多选  true多选，false单选，默认是单选
+			limitTips: string;
+			maxUsers?: number; //默认不限制
+			pickedUsers: string[];  //已选，但可取消，只针对多选生效
+			disabledUsers: string[]; //不可选，，只针对多选生效
+			requiredUsers: string[]; //必选，只针对多选生效
+			onSuccess(data: {
+				emplId: string;//选人的员工id
+				name: string;//员工姓名
+				avatar: string;//头像url
+				orgName: string;//公司名字
+			}[]): void;
+			onFail(err: any): void;
+		}): void;
+		// 编辑外部联系人
+		function externalEditForm(options: {
+			title: string;//标题
+			corpId: string;//公司id
+			emplId: string;//需要编辑的员工id，不填，则为新增外部联系人
+			name: string;//需要新增的外部联系人的名字
+			mobile: string;//需要预填的手机号
+			companyName: string;//需要预填的公司名
+			deptName: string;//预填部门名字
+			job: string;//预填职位
+			remark: string;//备注信息
+			onSuccess(data: {
+				emplId: string; //需要编辑的员工id，不填，则为新增外部联系人
+				name: string; //需要新增的外部联系人的名字，emplID为空时生效
+				mobile: string; //需要预填的手机号，emplID为空时生效
+				companyName: string; //需要预填的公司名，emplID为空时生效
+				deptName: string; //预填部门名字，emplID为空时生效
+				job: string; //预填职位，emplID为空时生效
+				remark: string; //备注信息，emplID为空时生效
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 自定义联系人
+	namespace customContact {
+		// 单选自定义联系人
+		function choose(options: {
+			title: string; //标题
+			users: string[];//一组员工userid
+			corpId: string; //加密的企业 ID，
+			isShowCompanyName: boolean;   //true|false，默认为 false
+			disabledUsers: string[]; //不能选的人
+			onSuccess(data: {
+				name: string; //姓名
+				avatar: string; //头像图片url，可能为空
+				emplId: string; //userid，[<font color=red>获取成员详情接口</font>](https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.DHPTF8&treeId=385&articleId=106816&docType=1#s1)
+			}[]): void;
+			onFail(err: any): void;
+		}): void;
+
+		// 多选自定义联系人
+		function multipleChoose(options: {
+			title: '多选人的标题', //标题
+			users: string[];//一组员工工号
+			corpId: string; //企业 ID，
+			isShowCompanyName: boolean;   //true|false，默认为 false
+			selectedUsers: string[]; //默认选中的人，注意:已选中不可以取消
+			disabledUsers: string[]; //不能选的人
+			max: 10, //人数限制
+			onSuccess(data: {
+				name: string; //姓名
+				avatar: string; //头像图片url，可能为空
+				emplId: string; //工号
+			}[]): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 用户信息
+	namespace user {
+		function get(options: {
+			onSuccess(info: {
+				id: string;	// 用户唯一标识ID
+				nickName: string;	// 用户名
+				avatar: string;	// 用户头像地址
+			}): void;
+			onFail(err: any): void;
+		}): void;
+	}
+
+	// 聊天页面活动视图入口
+	namespace intent {
+		// 获取用户选择的消息内容及会话相关的信息
+		function fetchData(options: {
+			onSuccess(data: {
+				content: string; // 传入的消息内容
+				chatId: string; // 消息来源的会话id
+				chatName: string; // 消息来源的会话名称
+				msgId: string; // 某条消息的消息锚点
+				msgsInfo: {
+					msgId: string; //消息Id
+					content: string; // 消息内容
+					atList: {
+						userId: string; //UserID
+						name: string; // 名字
+					}
+				}[];
 			}): void;
 			onFail(err: any): void;
 		}): void;
