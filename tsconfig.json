@@ -1,12 +1,11 @@
 {
 	"include": [
-		"**/*"
+		"**/*.ts"
 	],
 	"exclude": [
 		"node_modules",
 		"bower_components",
-		"jspm_packages",
-		"./"
+		"jspm_packages"
 	],
 	"compilerOptions": {
 		"module": "commonjs",
