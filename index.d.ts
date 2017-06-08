@@ -182,9 +182,9 @@ export interface ConfigOption {
 
 export function config(a: ConfigOption);
 
-export function ready(callback: () => {});
+export function ready(callback: () => void);
 
-export function error(callback: () => {});
+export function error(callback: () => void);
 
 // 获取容器版本号
 export const version: string;
