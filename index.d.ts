@@ -167,6 +167,7 @@ export type JsApiList =
 	'biz.util.scanCard';
 
 export interface ConfigOption {
+	type?: 0 | 1;
 	agentId: string;
 	corpId: string;
 	timeStamp: number;
@@ -184,7 +185,10 @@ export function config(a: ConfigOption);
 
 export function ready(callback: () => void);
 
-export function error(callback: () => void);
+export function error(callback: (err: {
+	errorCode: number;
+	message: string;
+}) => void);
 
 // 获取容器版本号
 export const version: string;
