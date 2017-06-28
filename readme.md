@@ -1,20 +1,21 @@
 # Use DingTalk in your typescript project.
-# Steps
-1. Install dependence.
+# Installation
 ```sh
 yarn add ali-dd
 # or
 (c)npm install ali-dd --save(-dev)
 ```
-2. Add types to your tsconfig.json
 
-```json
-{
-	"compilerOptions": {
-		# ...
-		"types": ["ali-dd"]
-		# ...
-	}
-}
+# Usage
+```ts
+import * as dd from 'ali-dd';
+dd.config(mixin(config, {
+	type: 0,
+	agentId: 'xxx',
+	corpId: 'xxx',
+	timeStamp: 1234,
+	nonceStr: 'xxx',
+	signature: 'xxx',
+	jsApiList: []
+}));
 ```
-3. Then use `dd` in your project freely.
