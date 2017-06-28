@@ -1,28 +1,28 @@
 {
-  "name": "ali-dd",
-  "version": "1.5.8-dev.201706281543",
-  "description": "dingtalk jsapi",
-  "main": "dingtalk.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "yarn version --new-version '1.5.8-dev.'$(date +%Y%m%d%H%M)"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/taoqf/ali-dd.git"
-  },
-  "readme": "readme.md",
-  "keywords": [
-    "dd",
-    "dingtalk",
-    "ali",
-    "typescript",
-    "jsapi"
-  ],
-  "author": "taoqf <tao_qiufeng@126.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/taoqf/ali-dd/issues"
-  },
-  "homepage": "https://github.com/taoqf/ali-dd#readme"
+	"name": "ali-dd",
+	"version": "1.5.8-dev.201706281543",
+	"description": "dingtalk jsapi",
+	"main": "dingtalk.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prepublishOnly": "yarn version --new-version '1.5.8-dev.'$(date +%Y%m%d%H%M)"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/taoqf/ali-dd.git"
+	},
+	"readme": "readme.md",
+	"keywords": [
+		"dd",
+		"dingtalk",
+		"ali",
+		"typescript",
+		"jsapi"
+	],
+	"author": "taoqf <tao_qiufeng@126.com>",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/taoqf/ali-dd/issues"
+	},
+	"homepage": "https://github.com/taoqf/ali-dd#readme"
 }
