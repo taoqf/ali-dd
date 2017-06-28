@@ -5,7 +5,7 @@
   "main": "dingtalk.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"prepublishOnly": "yarn version '1.5.8-dev.'$(date +%Y%m%d%H%M)"
+	"prepublishOnly": "yarn version --new-version '1.5.8-dev.'$(date +%Y%m%d%H%M)"
   },
   "repository": {
     "type": "git",
