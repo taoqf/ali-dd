@@ -201,7 +201,7 @@ export namespace runtime {
 			onSuccess(result: {
 				code: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 获取微应用反馈式操作的临时授权码
@@ -211,7 +211,7 @@ export namespace runtime {
 			onSuccess(result: {
 				code: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 }
@@ -224,7 +224,7 @@ export namespace channel {
 			onSuccess(result: {
 				code: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 }
@@ -237,7 +237,7 @@ export namespace device {
 			onSuccess(data: {
 				uuid: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 获取热点接入信息
@@ -246,7 +246,7 @@ export namespace device {
 				ssid: string;
 				macIp: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -259,7 +259,7 @@ export namespace device {
 			onSuccess(data: {
 				content: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 写NFC芯片
@@ -269,9 +269,9 @@ export namespace device {
 
 		function nfcWrite(options: {
 			content: string;
-			onSuccess(data: {
+			onSuccess?(data: {
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -281,8 +281,8 @@ export namespace device {
 			title: string;
 			buttonName: string;
 			//onSuccess将在点击button之后回调
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 
 		function confirm(options: {
@@ -293,7 +293,7 @@ export namespace device {
 			onSuccess(result: {
 				buttonIndex: number; //被点击按钮的索引值，Number类型，从0开始
 			}): void;
-			onFail(err): void;
+			onFail?(err): void;
 		}): void;
 
 		function prompt(options: {
@@ -305,36 +305,36 @@ export namespace device {
 				buttonIndex: number; //被点击按钮的索引值，Number类型，从0开始
 				value: string; //输入的值
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 震动
 		function vibrate(options: {
 			duration: string; //震动时间，android可配置 iOS忽略
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 显示浮层，请和hidePreloader配对使用
 		function showPreloader(options: {
-			text: string; //loading显示的字符，空表示不显示文字
-			showIcon: boolean; //是否显示icon，默认true
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			text?: string; //loading显示的字符，空表示不显示文字
+			showIcon?: boolean; //是否显示icon，默认true
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		function hidePreloader(options: {
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		function toast(options: {
-			icon: '' | 'success' | 'error'; //icon样式，有success和error，默认为空 0.0.2
+			icon?: 'success' | 'error'; //icon样式，有success和error，默认为空 0.0.2
 			text: string; //提示信息
-			duration: number; //显示持续时间，单位秒，默认按系统规范[android只有两种(<=2s >2s)]
-			delay: number; //延迟显示，单位秒，默认0
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			duration?: number; //显示持续时间，单位秒，默认按系统规范[android只有两种(<=2s >2s)]
+			delay?: number; //延迟显示，单位秒，默认0
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 单选列表
@@ -343,10 +343,10 @@ export namespace device {
 			cancelButton: string; //取消按钮文本
 			otherButtons: string[];
 			//onSuccess将在点击button之后回调
-			onSuccess(result: {
+			onSuccess?(result: {
 				buttonIndex: number; //被点击按钮的索引值，Number，从0开始, 取消按钮为-1
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// modal弹浮层
@@ -356,10 +356,10 @@ export namespace device {
 			content: string; //文本内容
 			buttonLabels: string[];// 最多两个按钮，至少有一个按钮。
 			//onSuccess将在点击button之后回调
-			onSuccess(result: {
+			onSuccess?(result: {
 				buttonIndex: number; //被点击按钮的索引值，Number，从0开始
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -390,7 +390,7 @@ export namespace device {
 				provider: 'wifi' | 'lbs' | 'gps';
 				isMobileEnabled: boolean;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -398,73 +398,73 @@ export namespace device {
 	namespace audio {
 		// 开始录音
 		function startRecord(options: {
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// 停止录音
 		function stopRecord(options: {
-			onSuccess(res: {
+			onSuccess?(res: {
 				mediaId: string; // 返回音频的MediaID，可用于本地播放和音频下载
 				duration: number; // 返回音频的时长，单位：秒
 			}): void;
-			onFail(err): void;
+			onFail?(err): void;
 		}): void;
 		// 监听录音自动停止
 		function onRecordEnd(options: {
-			onSuccess(res: {
+			onSuccess?(res: {
 				mediaId: string; // 停止播放音频MediaID
 				duration: number; // 返回音频的时长，单位：秒
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 		// 下载音频
 		function download(options: {
 			mediaId: string;
-			onSuccess(res: {
+			onSuccess?(res: {
 				localAudioId: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 		// 播放语音
 		function play(options: {
 			localAudioId: string;
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// 暂停播放语音
 		function pause(options: {
 			localAudioId: string;
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// 恢复暂停播放的语音
 		function resume(options: {
 			localAudioId: string;
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// 停止播放语音
 		function stop(options: {
 			localAudioId: string;
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// 监听播放自动停止
 		function onPlayEnd(options: {
-			onSuccess(res: {
+			onSuccess?(res: {
 				localAudioId: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 		// 语音转文字接口
 		function translateVoice(options: {
 			mediaId: string;
 			duration: number;
-			onSuccess(res: {
+			onSuccess?(res: {
 				mediaId: string; // 转换的语音的mediaId
 				content: string; // 语音转换的文字内容
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -476,17 +476,17 @@ export namespace device {
 			onSuccess(data: {
 				installed: string[]; //iOS:应用scheme;Android:应用包名
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 启动第三方应用
 		function launchApp(options: {
 			app: string; //iOS:应用scheme;Android:应用包名
-			activity: string; //仅限Android，打开指定Activity，可不传。如果为空，就打开App的Main入口Activity
-			onSuccess(data: {
+			activity?: string; //仅限Android，打开指定Activity，可不传。如果为空，就打开App的Main入口Activity
+			onSuccess?(data: {
 				result: boolean; //true 唤起成功 false 唤起失败
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -496,7 +496,7 @@ export namespace device {
 			onSuccess(data: {
 				result: 'wifi' | '2g' | '3g' | '4g' | 'unknown' | 'none'; // result值: wifi 2g 3g 4g unknown none   none表示离线
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -507,13 +507,13 @@ export namespace device {
 			sensitivity: number;//振动幅度，Number类型，加速度变化超过这个值后触发shake
 			frequency: number;//采样间隔(毫秒)，Number类型，指每隔多长时间对加速度进行一次采样， 然后对比前后变化，判断是否触发shake
 			callbackDelay: number;//触发『摇一摇』后的等待时间(毫秒)，Number类型，防止频繁调用
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 		// 摇一摇 开启监听
 		function clearShake(options: {
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 }
@@ -525,7 +525,7 @@ export namespace biz {
 			corpId: string;
 			url: string;
 			name: string;
-			onSuccess(data: {
+			onSuccess?(data: {
 				corpId: string;
 				spaceId: string;
 				fileId: string;
@@ -533,7 +533,7 @@ export namespace biz {
 				fileSize: number;
 				fileType: string;
 			}[]): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		function preview(options: {
@@ -543,8 +543,8 @@ export namespace biz {
 			fileName: string;
 			fileSize: number;
 			fileType: string;
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -556,7 +556,7 @@ export namespace biz {
 			file: { spaceId: "12345", max: 1 },
 			types: ["photo", "camera", "file", "space"],
 			//onSuccess将在文件上传成功之后调用
-			onSuccess(result: {
+			onSuccess?(result: {
 				type: 'image' | 'file' | 'space'; // 用户选择了哪种文件类型 ，image（图片）、file（手机文件）、space（钉盘文件）
 				data: {
 					spaceId: string;
@@ -566,7 +566,7 @@ export namespace biz {
 					fileType: string;
 				}[]
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 上传图片
@@ -574,25 +574,25 @@ export namespace biz {
 			multiple: boolean //是否多选，默认false
 			max: number; //最多可选个数
 			//onSuccess将在图片上传成功之后调用
-			onSuccess(result: string[]
+			onSuccess?(result: string[]
 			): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 上传图片（仅支持拍照上传）
 		function uploadImageFromCamera(options: {
 			compression: boolean;//(是否压缩，默认为true)
 			//onSuccess将在图片上传成功之后调用
-			onSuccess(result: string[]): void;
-			onFail(err: any): void;
+			onSuccess?(result: string[]): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 图片浏览器
 		function previewImage(options: {
 			urls: string[];		// 图片地址列表
 			current: string;	// 当前显示的图片链接
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 日期选择器
@@ -601,9 +601,9 @@ export namespace biz {
 			value: string; //默认显示日期
 			//onSuccess将在点击完成之后回调
 			onSuccess(result: {
-				value: "2015-02-10";
+				value: string; // "2015-02-10"
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 下拉控件
@@ -618,7 +618,7 @@ export namespace biz {
 				key: string;
 				value: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 打开应用内页面
@@ -629,8 +629,8 @@ export namespace biz {
 				id: string;
 				corpId: string;
 			};
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// b.聊天页面
@@ -640,26 +640,26 @@ export namespace biz {
 				users: string[];	// 用户列表,工号
 				corpId: string;
 			};
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// c.免费电话页面
 		function open(options: {
 			name: 'call';//页面名称
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// d.联系人添加页面
 		function open(options: {
 			name: 'contactAdd';//页面名称
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// f.唤起添加好友页面
 		function open(options: {
 			name: 'friendAdd';//页面名称
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 		// g.唤起员工管理页面
 		function open(options: {
@@ -668,15 +668,15 @@ export namespace biz {
 				corpId: string;
 				isManager: boolean;
 			};
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 在新窗口上打开链接
 		function openLink(options: {
 			url: string;	// 要打开链接的地址
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 分享
@@ -686,24 +686,24 @@ export namespace biz {
 			title: string;
 			content: string;
 			image: string;
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// ut数据埋点
 		function ut(options: {
 			key: string;//打点名
 			value: string | any;//打点传值
-			onSuccess(): void;
-			onFail(err: any): void;
+			onSuccess?(): void;
+			onFail?(err: any): void;
 		}): void;
 
 		namespace clipboardData {
 			// 复制到粘贴版
 			function setData(options: {
 				text: string; //要复制粘贴板的内容
-				onSuccess(): void;
-				onFail(): void;
+				onSuccess?(): void;
+				onFail?(): void;
 			}): void;
 		}
 
@@ -711,11 +711,12 @@ export namespace biz {
 		function scan(options: {
 			type: 'qrCode' | 'barCode'; // type为qrCode或者barCode
 			//onSuccess将在扫码成功之后回调
-			onSuccess(data: {
+			onSuccess?(data: {
 				text: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
+
 		// 扫描名片
 		function scanCard(options: { // 无需传参数
 			//onSuccess将在扫码成功之后回调
@@ -730,7 +731,7 @@ export namespace biz {
 				dt_tranfer: string;
 				request_id: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 客户端加密、解密
@@ -738,14 +739,14 @@ export namespace biz {
 			corpId: string;//必传,
 			data: any;
 			onSuccess(data: any): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		function decrypt(options: {
 			corpId: string;
 			data: any;
 			onSuccess(data: any): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -754,7 +755,7 @@ export namespace biz {
 		function locate(options: {
 			latitude: number; // 纬度
 			longitude: number; // 经度
-			onSuccess(result: {
+			onSuccess?(result: {
 				/* result 结构 */
 				province: string; // POI所在省会
 				provinceCode: string; // POI所在省会编码
@@ -769,7 +770,7 @@ export namespace biz {
 				latitude: number; // POI的纬度
 				longitude: number; // POI的经度
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// POI搜索
@@ -777,7 +778,7 @@ export namespace biz {
 			latitude: number; // 纬度
 			longitude: number; // 经度
 			scope: number; // 限制搜索POI的范围；设备位置为中心，scope为搜索半径
-			onSuccess(poi: {
+			onSuccess?(poi: {
 				/* result 结构 */
 				province: string; // POI所在省会
 				provinceCode: string; // POI所在省会编码
@@ -792,7 +793,7 @@ export namespace biz {
 				latitude: number; // POI的纬度
 				longitude: number; // POI的经度
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 展示位置
@@ -814,7 +815,7 @@ export namespace biz {
 				cid: string;
 				title: string;
 			}): void;
-			onFail(): void;
+			onFail?(): void;
 		}): void;
 
 		// 根据corpid选择会话
@@ -825,23 +826,23 @@ export namespace biz {
 				chatId: string;
 				title: string;
 			}): void;
-			onFail(): void;
+			onFail?(): void;
 		}): void;
 
 		// 根据chatid跳转到对应会话
 		function toConversation(options: {
 			corpId: string; //企业id
 			chatId: string;//会话Id
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 
 		// 打开与某个用户的聊天页面（单聊会话）
 		function openSingleChat(options: {
 			corpId: string; // 企业id
 			userId: string; // 用户的工号
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 
 		// 拉起对应的会话页面(当前的H5页面会被销毁)
@@ -849,8 +850,8 @@ export namespace biz {
 			chatId: string; // 消息来源的会话id
 			msgId: string;  // 某条消息的消息锚点，进入聊天页面后会根据锚点滚动到锚点对应的消息出，如果用户设备没有这条消息，该字段不会生效.
 			corpId: string; // 当前活动的微应用所在企业的corpId
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 	}
 
@@ -870,8 +871,8 @@ export namespace biz {
 			}; //附件信息
 			text: string; //消息
 			// onSuccess将在点击发送之后调用
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 		// 发钉 Link类型
 		function post(options: {
@@ -890,8 +891,8 @@ export namespace biz {
 				text: string;
 			};
 			text: string; //消息
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 	}
 
@@ -901,8 +902,8 @@ export namespace biz {
 		function call(options: {
 			users: string[]; //用户列表，工号
 			corpId: string; //企业id
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 
 		// 通用电话拨打接口
@@ -910,8 +911,8 @@ export namespace biz {
 			phoneNumber: string; // 期望拨打的电话号码
 			code: string; // 国家代号，中国是+86
 			showDingCall: boolean; // 是否显示钉钉电话
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 	}
 
@@ -919,12 +920,12 @@ export namespace biz {
 		// 支付接口
 		function pay(options: {
 			info: string; // 订单信息，
-			onSuccess(result: {
+			onSuccess?(result: {
 				memo: string; // 保留参数，一般无内容
 				result: string; // 本次操作返回的结果数据
 				resultStatus: string; // 本次操作的状态返回值，标识本次调用的结果
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -932,8 +933,8 @@ export namespace biz {
 		// 设置导航栏标题
 		function setTitle(options: {
 			title: string;//控制标题文本，空字符串表示显示默认文本
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 标题栏添加问号Icon
@@ -941,30 +942,30 @@ export namespace biz {
 			showIcon: boolean;//是否显示icon
 			iconIndex: 1 | 2 | 3 | 101 | 102 | 103;//显示的iconIndex,如上图
 			//点击icon之后将会回调这个函数
-			onSuccess(result: {}): void;
+			onSuccess?(result: {}): void;
 			//jsapi调用失败将会回调此函数
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 设置左侧导航按钮
 		function setLeft(options: {
-			show: boolean;//控制按钮显示， true 显示， false 隐藏， 默认true
-			control: boolean;//是否控制点击事件，true 控制，false 不控制， 默认false
-			showIcon: boolean;//是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
+			show?: boolean;//控制按钮显示， true 显示， false 隐藏， 默认true
+			control?: boolean;//是否控制点击事件，true 控制，false 不控制， 默认false
+			showIcon?: boolean;//是否显示icon，true 显示， false 不显示，默认true； 注：具体UI以客户端为准
 			text: string;//控制显示文本，空字符串表示显示默认文本
 			//如果control为true，则onSuccess将在发生按钮点击事件被回调
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 设置导航栏右侧
 		function setRight(options: {
-			show: boolean;//控制按钮显示， true 显示， false 隐藏， 默认true
-			control: boolean;//是否控制点击事件，true 控制，false 不控制， 默认false
+			show?: boolean;//控制按钮显示， true 显示， false 隐藏， 默认true
+			control?: boolean;//是否控制点击事件，true 控制，false 不控制， 默认false
 			text: string;//控制显示文本，空字符串表示显示默认文本
 			//如果control为true，则onSuccess将在发生按钮点击事件被回调
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 设置导航栏右侧多个按钮
@@ -976,16 +977,16 @@ export namespace biz {
 				iconId: string; //字符串，图标命名
 				text: string;
 			}[],
-			onSuccess(data: {
+			onSuccess?(data: {
 				id: string;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 触发关闭
-		function close(options: {
-			onSuccess(result: {}): void;
-			onFail(err: any): void;
+		function close(options?: {
+			onSuccess?(result: {}): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -994,22 +995,22 @@ export namespace biz {
 		// 选人
 		function choose(options: {
 			startWithDepartmentId: number; //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
-			multiple: boolean; //是否多选： true多选 false单选； 默认true
+			multiple?: boolean; //是否多选： true多选 false单选； 默认true
 			users: string[]; //默认选中的用户列表，userid；成功回调中应包含该信息
 			disabledUsers: string[];	// 不能选中的用户列表，员工userid
 			corpId: string; //企业id
-			max: number; //人数限制，当multiple为true才生效，可选范围1-1500
+			max?: number; //人数限制，当multiple为true才生效，可选范围1-1500
 			limitTips: string; //超过人数限制的提示语可以用这个字段自定义
 			isNeedSearch: boolean; // 是否需要搜索功能
 			title: string; // 如果你需要修改选人页面的title，可以在这里赋值
-			local: string; // 是否显示本地联系人，默认false
+			local?: string; // 是否显示本地联系人，默认false
 			//onSuccess将在选人结束，点击确定按钮的时候被回调
 			onSuccess(data: {
 				name: string; //姓名
 				avatar: string; //头像图片url，可能为空
 				emplId: string; //userid
 			}[]): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 		// 选人，选部门
 		function complexChoose(options: {
@@ -1020,7 +1021,7 @@ export namespace biz {
 			disabledDepartments: string[]; // 不能选中的部门列表，部门id
 			max?: number; //人数限制，当multiple为true才生效，可选范围1-1500
 			limitTips: string; //超过人数限制的提示语可以用这个字段自定义
-			local: boolean; // 是否显示本地联系人，默认false
+			local?: boolean; // 是否显示本地联系人，默认false
 			isNeedSearch: boolean; // 是否需要搜索功能
 			corpId: string; //企业id
 			//onSuccess将在选人，选部门结束，点击确定按钮的时候被回调
@@ -1035,72 +1036,72 @@ export namespace biz {
 					name: string;
 				}[];
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 		// 选部门
 		function complexPicker(options: {
-			title: string;            //标题
-			corpId: string;              //企业的corpId
-			multiple: boolean;            //是否多选
-			limitTips: string;          //超过限定人数返回提示
-			maxUsers?: number;            //最大可选人数
-			pickedUsers: string[];            //已选用户
-			pickedDepartments: string[];          //已选部门
-			disabledUsers: string[];            //不可选用户
-			disabledDepartments: string[];        //不可选部门
-			requiredUsers: string[];            //必选用户（不可取消选中状态）
-			requiredDepartments: string[];        //必选部门（不可取消选中状态）
-			appId: number;              //微应用的Id
-			permissionType: 'GLOBAL';          //选人权限，目前只有GLOBAL这个参数
-			responseUserOnly: boolean;        //单纯返回人，或者返回人和部门
-			onSuccess(result: {
-				selectedCount: number;                              //选择人数
+			title: string;					//标题
+			corpId: string;					//企业的corpId
+			multiple: boolean;				//是否多选
+			limitTips: string;				//超过限定人数返回提示
+			maxUsers?: number;				//最大可选人数
+			pickedUsers: string[];			//已选用户
+			pickedDepartments: string[];	//已选部门
+			disabledUsers: string[];		//不可选用户
+			disabledDepartments: string[];	//不可选部门
+			requiredUsers: string[];		//必选用户（不可取消选中状态）
+			requiredDepartments: string[];	//必选部门（不可取消选中状态）
+			appId: number;					//微应用的Id
+			permissionType: 'GLOBAL';		//选人权限，目前只有GLOBAL这个参数
+			responseUserOnly: boolean;		//单纯返回人，或者返回人和部门
+			onSuccess?(result: {
+				selectedCount: number;		//选择人数
 				users: {
 					name: string;
 					avatar: string;
 					emplId: string;
-				}[];//返回选人的列表，列表中的对象包含name（用户名），avatar（用户头像），emplId（用户工号）三个字段
+				}[];						//返回选人的列表，列表中的对象包含name（用户名），avatar（用户头像），emplId（用户工号）三个字段
 				departments: {
 					id: string;
 					name: string;
 					number: number;
-				}[];//返回已选部门列表，列表中每个对象包含id（部门id）、name（部门名称）、number（部门人数）
+				}[];						//返回已选部门列表，列表中每个对象包含id（部门id）、name（部门名称）、number（部门人数）
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 选择部门信息
 		function departmentsPicker(options: {
-			title: string;            //标题
-			corpId: string;              //企业的corpId
-			multiple: boolean;            //是否多选
-			limitTips: string;          //超过限定人数返回提示
-			maxDepartments?: number;            //最大选择部门数量
-			pickedDepartments: string[];          //已选部门
-			disabledDepartments: string[];        //不可选部门
-			requiredDepartments: string[];        //必选部门（不可取消选中状态）
-			appId: number;              //微应用的Id
-			permissionType: 'GLOBAL';          //选人权限，目前只有GLOBAL这个参数
+			title: string;					//标题
+			corpId: string;					//企业的corpId
+			multiple: boolean;				//是否多选
+			limitTips: string;				//超过限定人数返回提示
+			maxDepartments?: number;		//最大选择部门数量
+			pickedDepartments: string[];	//已选部门
+			disabledDepartments: string[];	//不可选部门
+			requiredDepartments: string[];	//必选部门（不可取消选中状态）
+			appId: number;					//微应用的Id
+			permissionType: 'GLOBAL'; 		//选人权限，目前只有GLOBAL这个参数
 			onSuccess(result: {
-				userCount: number;                              //选择人数
-				departmentsCount: number;//选择的部门数量
+				userCount: number;			//选择人数
+				departmentsCount: number;	//选择的部门数量
 				departments: {
 					id: string;
 					name: string;
 					number: number;
 				}[];//返回已选部门列表，列表中每个对象包含id（部门id）、name（部门名称）、number（部门人数）
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 创建企业群聊天
 		function createGroup(options: {
 			corpId: string; //企业id，可选，配置该参数即在指定企业创建群聊天
 			users: string[]; //默认选中的用户工号列表，可选；使用此参数必须指定corpId
-			onSuccess(result: {
+			onSuccess?(result: {
 				id: number;   //企业群id
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 设定规则选人
@@ -1117,17 +1118,17 @@ export namespace biz {
 			ruleId: number;// 规则id
 			ruleName: string; //规则名称
 			//onSuccess将在选择结束，点击确定按钮的时候被回调
-			onSuccess(data: {
+			onSuccess?(data: {
 				userCount: number;//选中的人数
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 选择外部联系人
 		function externalComplexPicker(options: {
 			title: string;
 			corpId: string;
-			multiple: boolean; //是否多选  true多选，false单选，默认是单选
+			multiple?: boolean; //是否多选  true多选，false单选，默认是单选
 			limitTips: string;
 			maxUsers?: number; //默认不限制
 			pickedUsers: string[];  //已选，但可取消，只针对多选生效
@@ -1139,7 +1140,7 @@ export namespace biz {
 				avatar: string;//头像url
 				orgName: string;//公司名字
 			}[]): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 		// 编辑外部联系人
 		function externalEditForm(options: {
@@ -1152,7 +1153,7 @@ export namespace biz {
 			deptName: string;//预填部门名字
 			job: string;//预填职位
 			remark: string;//备注信息
-			onSuccess(data: {
+			onSuccess?(data: {
 				emplId: string; //需要编辑的员工id，不填，则为新增外部联系人
 				name: string; //需要新增的外部联系人的名字，emplID为空时生效
 				mobile: string; //需要预填的手机号，emplID为空时生效
@@ -1161,7 +1162,7 @@ export namespace biz {
 				job: string; //预填职位，emplID为空时生效
 				remark: string; //备注信息，emplID为空时生效
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -1174,12 +1175,12 @@ export namespace biz {
 			corpId: string; //加密的企业 ID，
 			isShowCompanyName: boolean;   //true|false，默认为 false
 			disabledUsers: string[]; //不能选的人
-			onSuccess(data: {
+			onSuccess?(data: {
 				name: string; //姓名
 				avatar: string; //头像图片url，可能为空
 				emplId: string; //userid，[<font color=red>获取成员详情接口</font>](https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.DHPTF8&treeId=385&articleId=106816&docType=1#s1)
 			}[]): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 
 		// 多选自定义联系人
@@ -1196,7 +1197,7 @@ export namespace biz {
 				avatar: string; //头像图片url，可能为空
 				emplId: string; //工号
 			}[]): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -1205,10 +1206,15 @@ export namespace biz {
 		function get(options: {
 			onSuccess(info: {
 				id: string;	// 用户唯一标识ID
+				corpId: string;
+				emplId: string;	// 员工ID
 				nickName: string;	// 用户名
 				avatar: string;	// 用户头像地址
+				rightLevel: string;
+				isAuth: boolean;
+				isManager: boolean;
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 
@@ -1230,7 +1236,7 @@ export namespace biz {
 					}
 				}[];
 			}): void;
-			onFail(err: any): void;
+			onFail?(err: any): void;
 		}): void;
 	}
 }
@@ -1245,7 +1251,7 @@ export namespace ui {
 			onSuccess(data: {
 				text: String
 			}): void;
-			onFail(): void;
+			onFail?(): void;
 		}): void;
 	}
 
@@ -1253,16 +1259,16 @@ export namespace ui {
 		// 设置顶部进度条颜色
 		function setColors(options: {
 			colors: number[]; //array[number] 进度条变化颜色，最多支持4个颜色
-			onSuccess(data: boolean): void;
-			onFail(): void;
+			onSuccess?(data: boolean): void;
+			onFail?(): void;
 		}): void;
 	}
 
 	namespace pullToRefresh {
 		// 启用下拉刷新
 		function enable(options: {
-			onSuccess(): void;
-			onFail(): void;
+			onSuccess?(): void;
+			onFail?(): void;
 		}): void;
 		// 收起下拉loading
 		function stop(): void;
