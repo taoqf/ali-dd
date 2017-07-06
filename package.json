@@ -1,6 +1,6 @@
 {
 	"name": "ali-dd",
-	"version": "1.5.8-dev.201706281755",
+	"version": "1.5.8-dev.201707061539",
 	"description": "dingtalk jsapi",
 	"main": "dingtalk.js",
 	"types": "index.d.ts",
