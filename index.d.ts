@@ -860,13 +860,13 @@ export namespace biz {
 		function post(options: {
 			users: string[];//用户列表，工号
 			corpId: string; //企业id
-			type: 1; //附件类型 1：image  2：link
-			alertType: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
-			alertDate: {
-				format: "yyyy-MM-dd HH:mm";
+			type?: 1; //附件类型 1：image  2：link
+			alertType?: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
+			alertDate?: {
+				format: string;	// "yyyy-MM-dd HH:mm:ss";
 				value: string;
 			};
-			attachment: {
+			attachment?: {
 				images: string[];
 			}; //附件信息
 			text: string; //消息
@@ -881,7 +881,7 @@ export namespace biz {
 			type: 2; //钉类型 1：image  2：link
 			alertType: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
 			alertDate: {
-				format: "yyyy-MM-dd HH:mm";
+				format: string;	// "yyyy-MM-dd HH:mm:ss";
 				value: string;
 			};
 			attachment: {
