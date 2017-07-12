@@ -861,7 +861,7 @@ export namespace biz {
 			users: string[];//用户列表，工号
 			corpId: string; //企业id
 			type?: 1; //附件类型 1：image  2：link
-			alertType?: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
+			alertType: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
 			alertDate?: {
 				format: string;	// "yyyy-MM-dd HH:mm:ss";
 				value: string;
@@ -869,7 +869,7 @@ export namespace biz {
 			attachment?: {
 				images: string[];
 			}; //附件信息
-			text: string; //消息
+			text?: string; //消息
 			// onSuccess将在点击发送之后调用
 			onSuccess?(): void;
 			onFail?(): void;
@@ -880,17 +880,17 @@ export namespace biz {
 			corpId: string; //企业id
 			type: 2; //钉类型 1：image  2：link
 			alertType: 0 | 1 | 2;	// 钉提醒类型 0:电话, 1:短信, 2:应用内
-			alertDate: {
+			alertDate?: {
 				format: string;	// "yyyy-MM-dd HH:mm:ss";
 				value: string;
 			};
-			attachment: {
+			attachment?: {
 				title: string;
 				url: string;
 				image: string;
 				text: string;
 			};
-			text: string; //消息
+			text?: string; //消息
 			onSuccess?(): void;
 			onFail?(): void;
 		}): void;
