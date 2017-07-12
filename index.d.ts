@@ -316,14 +316,14 @@ export namespace device {
 		}): void;
 
 		// 显示浮层，请和hidePreloader配对使用
-		function showPreloader(options: {
+		function showPreloader(options?: {
 			text?: string; //loading显示的字符，空表示不显示文字
 			showIcon?: boolean; //是否显示icon，默认true
 			onSuccess?(result: {}): void;
 			onFail?(err: any): void;
 		}): void;
 
-		function hidePreloader(options: {
+		function hidePreloader(options?: {
 			onSuccess?(result: {}): void;
 			onFail?(err: any): void;
 		}): void;
